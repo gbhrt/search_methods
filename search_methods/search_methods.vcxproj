@@ -110,9 +110,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="A_star.cpp" />
     <ClCompile Include="BFS.cpp" />
     <ClCompile Include="classes.cpp" />
     <ClCompile Include="DFID.cpp" />
+    <ClCompile Include="heuristics.cpp" />
     <ClCompile Include="library.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="read_file.cpp" />

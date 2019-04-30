@@ -3,6 +3,7 @@
 #include <sstream> // stringstream
 #include <iomanip> // setprecision
 #include <ctime>
+#include <queue> 
 #include "Header.h"
 
 string NumberToString(double Number)//becuase it use only c++98
@@ -85,6 +86,15 @@ void print_node(Node* node,string name)
 
 }
 
+int get_cost(Operation  operation)
+{
+	if (operation.blockes_val.size() == 1)
+		return 5;
+	else if (operation.direction == 1 || operation.direction == 3)//vertical
+		return 7;
+	else
+		return 6;
+}
 string get_path(Node* node,int & cost)
 {
 	string path;
@@ -99,12 +109,7 @@ string get_path(Node* node,int & cost)
 		if (node->root)
 			break;
 		path_vec.push_back(node->operation.create_string());
-		if (node->operation.blockes_val.size() == 1)
-			cost += 5;
-		else if (node->operation.direction == 1 || node->operation.direction == 3)//vertical
-			cost += 7;
-		else
-			cost += 6;
+		cost += get_cost(node->operation);
 
 		node = node->parent;
 	}
@@ -151,6 +156,7 @@ Node* get_node(Node* parent_node, Operation  operation)
 	node->state = parent_node->state;
 	node->parent = parent_node;
 	node->operation.direction = operation.direction;
+	node->g = get_cost(operation)+ parent_node->g;
 
 	for (int i = 0; i < operation.blockes_ind.size(); i++)//for all blockes (1 or 2)
 	{
@@ -282,11 +288,11 @@ vector<Operation> get_allowed_operators(Node* node)//return the allowed operator
 		operations.push_back(operation);
 	}
 	int first_hole;
-	if (node->holes[0][1] < node->holes[0][1])//0 is above 1
+	if (node->holes[0][1] < node->holes[1][1])//0 is above 1
 		first_hole = 0;
-	else if (node->holes[0][1] > node->holes[0][1])//1 is above 0
+	else if (node->holes[0][1] > node->holes[1][1])//1 is above 0
 		first_hole = 1;
-	else if (node->holes[0][0] < node->holes[0][0])//both in the same row and 0 is left to 1
+	else if (node->holes[0][0] < node->holes[1][0])//both in the same row and 0 is left to 1
 		first_hole = 0;
 	else//both in the same row and 1 is left to 0
 		first_hole = 1;
@@ -346,4 +352,29 @@ vector<Operation> get_allowed_operators(Node* node)//return the allowed operator
 
 	return operations;
 
+}
+
+void replace_node_in_priority_quene(priority_queue <Node*, vector<Node*>, Comparator > & pq, Node* exist_node, Node * node)
+{
+	vector<Node*> tmp;
+	int size = pq.size();
+	//for (int i = 0; i < size; i++)
+	//{
+	//	tmp.push_back(pq.top());
+	//	pq.pop();
+	//}
+	do
+	{
+		tmp.push_back(pq.top());
+		pq.pop();
+	} while (tmp.back() != exist_node);
+
+	exist_node->f = node->f;
+	exist_node->g = node->g;
+	exist_node->h = node->h;
+	exist_node->parent = node->parent;
+	for (int i = 0; i < tmp.size(); i++)
+	{
+		pq.push(tmp[i]);
+	}
 }

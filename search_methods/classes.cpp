@@ -17,7 +17,7 @@ int winTimer::get_time()
 void hash_table::push(Node* node)
 {
 	string key = convert_to_key(node);
-	add_to_hash(key);
+	add_to_hash(key, node);
 }
 
 string hash_table::convert_to_key(Node* node)
@@ -34,14 +34,14 @@ string hash_table::convert_to_key(Node* node)
 	}
 	return key;
 }
-void hash_table::add_to_hash(string key)
+void hash_table::add_to_hash(string key, Node* node)
 {
-	hashmap[key] = true;
+	hashmap[key] = node;
 }
 
 bool hash_table::is_inside(Node* node)
 {
-	winTimer timer;
+	//winTimer timer;
 
 	string key = convert_to_key(node);
 	//timer.save_time();
@@ -50,11 +50,25 @@ bool hash_table::is_inside(Node* node)
 	//cout << "find time: " << timer.get_time() << endl;
 	return true;
 }
+Node* hash_table::get_node(Node* node)
+{
+	string key = convert_to_key(node);
+	return hashmap[key];
+}
 void hash_table::remove(Node* node)
 {
 	string key = convert_to_key(node);
 	hashmap.erase(key);
 }
+void hash_table::clear()
+{
+	hashmap.clear();
+}
+int hash_table::size()
+{
+	return hashmap.size();
+}
+
 Node::Node()
 {
 	root = false;
@@ -70,4 +84,14 @@ string Operation::create_string()
 		str.append(NumberToString(blockes_val[0]));
 	str.append(dir_code[direction]);
 	return str;
+}
+
+//bool Node::operator<(const Node * node)
+//{
+//	return this->f < node->f;
+//}
+
+bool Comparator:: operator()(const Node* node1, const Node* node2)
+{
+	return (node1->f > node2->f);
 }

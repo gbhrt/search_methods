@@ -1,34 +1,67 @@
 #include "Header.h"
-
-
-bool DFS_algo(Node* start, Node* goal, int max_depth, int & count)
+#include<iostream>
+using namespace std;
+winTimer timer;
+bool DFS_algo(Node* start, Node* goal, hash_table & working_path, int max_depth, int & count)
 {
-	//Node* node = new Node();
-	if (check_goal(start, goal))
-		return true;
-
+	
+	if (max_depth == 0)
+		return false;
+	max_depth--;
+	working_path.push(start);
+	//cout << "working_path: " << working_path.size() << endl;
 	vector <Operation> operations = get_allowed_operators(start);
 	for (int i = 0; i < operations.size(); i++)
 	{
 		Node* g = get_node(start, operations[i]);//create a new node
+		//print_node(g,"g"+NumberToString(i));
 		count++;
-		if (count == max_depth)
-			return false;
-		if (DFS_algo(g, goal, max_depth, count))
+		
+		if (working_path.is_inside(g))
+		{
+			
+			//cout << "loop avoided" << endl;
+			delete g;
+			continue;
+
+		}
+		
+		
+
+		if (check_goal(g, goal))
+		{
+			goal->parent = g->parent;
+			goal->operation = g->operation;
+			working_path.remove(start);
 			return true;
+		}
+		
+		if (DFS_algo(g, goal, working_path, max_depth, count))
+		{
+			//timer.save_time();
+			working_path.remove(start);
+			//cout << "time is_inside: " << timer.get_time() << endl;
+			return true;
+		}
 	}
+	working_path.remove(start);
+	//cout << "end path ____________________\n";
 	return false;
 }
 
 bool DFID_algo(Node* start, Node* goal, int & count)
 {
-	int max_depth = 1;
-	count = 0;
+	int max_depth = 10;
+	hash_table  working_path;
+	working_path.push(start);
 	while (1) 
 	{
-		if (DFS_algo(start, goal, max_depth, count))
+		count = 0;
+		if (DFS_algo(start, goal, working_path, max_depth, count))
 			return true;
-		count++;
+		//working_path.clear();
+		max_depth++;
+		cout << "max_depth: " << max_depth << "_____________________\n";
 	}
 	return false;
 

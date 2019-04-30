@@ -2,7 +2,6 @@
 #include <vector>
 #include <iostream> 
 #include <queue> 
-#include<unordered_map>
 #include <ctime>
 
 #include "Header.h"
@@ -31,7 +30,6 @@ bool BFS_algo(Node* start, Node* goal, int & count)
 
 		vector <Operation> operations = get_allowed_operators(n);
 	
-
 		for (int i = 0; i < operations.size(); i++)
 		{
 

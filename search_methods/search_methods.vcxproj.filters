@@ -33,6 +33,12 @@
     <ClCompile Include="DFID.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="A_star.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="heuristics.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header.h">
