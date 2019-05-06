@@ -20,5 +20,5 @@ int comp_heuristic(Node * node, Node * goal)
 			manhattan_distance += abs(i - indexes[0]) + abs(j - indexes[1]);
 		}
 	}
-	return int(floor(manhattan_distance/2));
+	return int(floor(manhattan_distance/2)*6);
 }

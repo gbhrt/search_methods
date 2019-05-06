@@ -32,31 +32,35 @@ bool DFS_algo(Node* start, Node* goal, hash_table & working_path, int max_depth,
 		{
 			goal->parent = g->parent;
 			goal->operation = g->operation;
-			working_path.remove(start);
+			/*working_path.remove(start);
+			delete start;*/
 			return true;
 		}
 		
 		if (DFS_algo(g, goal, working_path, max_depth, count))
 		{
 			//timer.save_time();
-			working_path.remove(start);
+			//working_path.remove(start);
+			//delete start;
 			//cout << "time is_inside: " << timer.get_time() << endl;
 			return true;
 		}
 	}
 	working_path.remove(start);
+	//if(!start->root)
+	//	delete start;
 	//cout << "end path ____________________\n";
 	return false;
 }
 
 bool DFID_algo(Node* start, Node* goal, int & count)
 {
-	int max_depth = 10;
+	int max_depth = 0;
 	hash_table  working_path;
 	working_path.push(start);
+	count = 0;
 	while (1) 
 	{
-		count = 0;
 		if (DFS_algo(start, goal, working_path, max_depth, count))
 			return true;
 		//working_path.clear();
