@@ -113,10 +113,12 @@
     <ClCompile Include="A_star.cpp" />
     <ClCompile Include="BFS.cpp" />
     <ClCompile Include="classes.cpp" />
+    <ClCompile Include="DFBnB.cpp" />
     <ClCompile Include="DFID.cpp" />
     <ClCompile Include="heuristics.cpp" />
+    <ClCompile Include="IDA_star.cpp" />
     <ClCompile Include="library.cpp" />
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Ex1cpp.cpp" />
     <ClCompile Include="read_file.cpp" />
   </ItemGroup>
   <ItemGroup>

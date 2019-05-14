@@ -8,9 +8,9 @@
 
 using namespace std;
 
-bool A_star_algo(Node* start, Node* goal, int & count)
+vector<Node*> A_star_algo(Node* start, Node* goal, int & count, bool & success)
 {
-	winTimer timer;
+	//winTimer timer;
 
 	priority_queue <Node*,vector<Node*>, Comparator > pq;//create open nodes quene 
 
@@ -47,9 +47,10 @@ bool A_star_algo(Node* start, Node* goal, int & count)
 		count++;
 		if (check_goal(n, goal))
 		{
-			goal->parent = n->parent;
-			goal->operation = n->operation;
-			return true;
+			/*goal->parent = n->parent;
+			goal->operation = n->operation;*/
+			success = true;
+			return get_path(n);
 		}
 		hash_C.push(n);
 		
@@ -89,5 +90,8 @@ bool A_star_algo(Node* start, Node* goal, int & count)
 
 
 	}
-	return false;
+	
+	success = false;
+	vector<Node*> path;
+	return path;
 }

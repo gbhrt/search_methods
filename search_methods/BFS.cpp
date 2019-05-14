@@ -8,16 +8,16 @@
 
 using namespace std;
 
-bool BFS_algo(Node* start, Node* goal, int & count)
+vector<Node*> BFS_algo(Node* start, Node* goal, int & count, bool & success)
 {
-	winTimer timer;
+	//winTimer timer;
 
 	queue <Node*> L;//create open nodes quene 
 	L.push(start);//initialize with start node
 	hash_table hash_L;
 	hash_L.push(start);
 	hash_table hash_C;
-	count = -1;//because also count the given start node.
+	count = 0;	
 	while (!L.empty())
 	{
 		Node* n = L.front();
@@ -42,9 +42,11 @@ bool BFS_algo(Node* start, Node* goal, int & count)
 			{
 				if (check_goal(g, goal))
 				{
-					goal->parent = g->parent;
-					goal->operation = g->operation;
-					return true;
+					/*goal->parent = g->parent;
+					goal->operation = g->operation;*/
+					//vector<Node*> path = get_path(g);
+					success = true;
+					return get_path(g);
 				}
 				L.push(g);
 				hash_L.push(g);
@@ -54,5 +56,7 @@ bool BFS_algo(Node* start, Node* goal, int & count)
 	
 
 	}
-	return false;
+	success = false;
+	vector<Node*> path;
+	return path;
 }

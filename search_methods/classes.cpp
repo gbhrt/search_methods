@@ -1,19 +1,19 @@
 #include "Header.h"
 
-
-winTimer::winTimer()
-{
-	QueryPerformanceFrequency(&freq);
-}
-void winTimer::save_time()
-{
-	QueryPerformanceCounter(&start_time);
-}
-int winTimer::get_time()
-{
-	QueryPerformanceCounter(&read);
-	return int((read.QuadPart - start_time.QuadPart)*1000000.) / freq.QuadPart;
-}
+//
+//winTimer::winTimer()
+//{
+//	QueryPerformanceFrequency(&freq);
+//}
+//void winTimer::save_time()
+//{
+//	QueryPerformanceCounter(&start_time);
+//}
+//int winTimer::get_time()
+//{
+//	QueryPerformanceCounter(&read);
+//	return int((read.QuadPart - start_time.QuadPart)*1000000.) / freq.QuadPart;
+//}
 void hash_table::push(Node* node)
 {
 	string key = convert_to_key(node);
@@ -72,6 +72,8 @@ int hash_table::size()
 Node::Node()
 {
 	root = false;
+	//for (int i = 0; i < 1000000; i++)
+	//	tmp.push_back(0);
 }
 string Operation::create_string()
 {
@@ -94,4 +96,9 @@ string Operation::create_string()
 bool Comparator:: operator()(const Node* node1, const Node* node2)
 {
 	return (node1->f > node2->f);
+}
+
+bool ComparatorIncrease:: operator()(const Node* node1, const Node* node2)
+{
+	return (node1->f < node2->f);
 }
