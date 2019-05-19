@@ -1,27 +1,13 @@
-//#pragma once
 #include <string>
 #include <vector>
 //#include<unordered_map>
-#include<tr1/unordered_map>
+#include<tr1/unordered_map>//c++98
 #include <queue> 
 #include <stack>
 #include <stdlib.h>
-//#include<Windows.h>
+
 using namespace std;
 
-//std::tr1::unordered_map
-//class winTimer
-//{
-//public:
-//	winTimer();
-//	void save_time();
-//	int get_time();
-//private:
-//	LARGE_INTEGER  freq, start_time,read;
-//	
-//	
-//	
-//};
 class Operation
 {
 public:
@@ -44,13 +30,9 @@ public:
 	Operation operation;//the operation that lead from parent to this node
 	int f;
 	int g;
-	int h;
 	bool out;
-	//vector<int>tmp;
-	//bool operator<(const Node* node); //const
 
 	Node();
-
 };
 class Comparator {
 public:
@@ -70,10 +52,9 @@ public:
 	Node* get_node(Node* node);
 	void clear();
 	int size();
-	//Node* get_node(Node & node);
 private:
-	
-	std::tr1::unordered_map< string, Node*> hashmap;
+
+	std::tr1::unordered_map< string, Node*> hashmap;//c++98
 	//unordered_map< string, Node*> hashmap;
 	void add_to_hash(string key, Node* node);
 	string convert_to_key(Node* node);
@@ -95,7 +76,6 @@ string NumberToString(int Number);
 string NumberToString(double Number);
 float StringToFloat(const string &Text);
 int StringToInt(const string &Text);
-//string get_path(Node* node, int & cost);
 string create_path_string(vector<Node*> path, bool success);
 vector<Node*> get_path(Node* node);
 void save_data(string output_file, vector<string> answers);

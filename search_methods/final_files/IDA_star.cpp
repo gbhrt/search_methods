@@ -10,18 +10,18 @@ using namespace std;
 
 vector<Node*> IDA_star_algo(Node* start, Node* goal, int & count, bool & success)
 {
+	int inf = 99999999;
+
 	stack <Node*> L;//create open nodes stack 
 	hash_table H;
 	int t = comp_heuristic(start, goal);
-	int inf = 99999999;
-	//start->out = false;
+	
 	while (t < inf)
 	{
 		int minF = inf;
 		start->out = false;
 		L.push(start);//initialize with start node
 		H.push(start);
-		
 
 		while (!L.empty())
 		{
@@ -39,16 +39,12 @@ vector<Node*> IDA_star_algo(Node* start, Node* goal, int & count, bool & success
 				count++;
 				L.push(n);
 				vector <Operation> operations = get_allowed_operators(n);
-				//print_node(n, "_____n____");
-				//for (Operation operation : operations)
-				for (int i = 0; i< operations.size(); i++)
+				for (int i = operations.size()-1; i>=0 ; i--)
 				{
 					Node* g = get_node(n, operations[i]);//create a new node
-					//print_node(g,"g");
-					
+				
 					int h = comp_heuristic(g, goal);
 					g->f = g->g + h;
-					//cout << "f: " << g->f << "h: "<<h<<endl;
 					g->out = false;
 					if (g->f > t)
 					{
@@ -76,22 +72,17 @@ vector<Node*> IDA_star_algo(Node* start, Node* goal, int & count, bool & success
 								delete g;
 								continue;
 							}
-
 						}
 					}
 					if (check_goal(g, goal))
 					{
-						/*goal->parent = g->parent;
-						goal->operation = g->operation;*/
 						success = true;
 						return get_path(g);
 					}
 					L.push(g);
 					H.push(g);
 				}
-
 			}
-
 		}
 		t = minF;
 		cout << "t: " << t << endl;

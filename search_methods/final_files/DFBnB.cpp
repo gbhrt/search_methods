@@ -11,19 +11,16 @@
 using namespace std;
 
 
-vector<Node*> DFBnB_algo(Node* start, Node* goal, int & count,bool & error)
+vector<Node*> DFBnB_algo(Node* start, Node* goal, int & count,bool & success)
 {
-	int inf = 99999999;
-	int upper_bound = 12;
+	int upper_bound = 10000;
 
-	vector<Node*> result;//solution
+	success = false;
+	vector<Node*> path;//solution
 	stack <Node*> L;//create open nodes stack 
 	hash_table H;
 	int t = upper_bound;
 
-
-
-	int minF = inf;
 	start->out = false;
 	L.push(start);//initialize with start node
 	H.push(start);
@@ -44,13 +41,12 @@ vector<Node*> DFBnB_algo(Node* start, Node* goal, int & count,bool & error)
 		{
 			n->out = true;
 			count++;
-			//cout << count << endl;
 			L.push(n);
 			vector <Operation> operations = get_allowed_operators(n);
-			print_node(n, "_____n____");
 
 			list<Node*> N;
-			//for (Operation operation : operations)
+
+			//for (Operation operation : operations)//
 			for(int i = 0; i< operations.size();i++)
 			{
 				Node* g = get_node(n, operations[i]);//create a new node
@@ -61,18 +57,22 @@ vector<Node*> DFBnB_algo(Node* start, Node* goal, int & count,bool & error)
 				g->out = false;
 				N.push_back(g);
 			}
-			N.sort(ComparatorIncrease());
+			N.sort(ComparatorIncrease());//sort in incresing order. preserve the operator order for equal f values
+
 			list<Node*>::iterator it = N.begin();
 			while (it != N.end())
 			{
 				Node* g = *it;
 				
-				print_node(g, "g");
-				cout << "f: " << g->f << endl;// "h: " << h << endl;
-				if (g->f > t)
+				//print_node(g, "g");
+				//cout << "f: " << g->f << endl;// "h: " << h << endl;
+				if (g->f >= t)
 				{
 					while (it != N.end())
-						it= N.erase(it);
+					{
+						delete *it;
+						it = N.erase(it);
+					}
 
 					break;//avoids it++ at the end of the loop
 				}
@@ -81,6 +81,7 @@ vector<Node*> DFBnB_algo(Node* start, Node* goal, int & count,bool & error)
 					Node* exist_g = H.get_node(g);
 					if (exist_g->out)
 					{
+						delete g;
 						it = N.erase(it);
 						continue;//avoids it++ at the end of the loop
 						
@@ -89,6 +90,7 @@ vector<Node*> DFBnB_algo(Node* start, Node* goal, int & count,bool & error)
 					{
 						if (exist_g->f <= g->f)
 						{
+							delete g;
 							it = N.erase(it);
 							continue;//avoids it++ at the end of the loop
 						}
@@ -104,11 +106,13 @@ vector<Node*> DFBnB_algo(Node* start, Node* goal, int & count,bool & error)
 					t = g->f;
 					cout << "found goal " << t << endl;
 
-					//result = get_path(L);
-					result = get_path(g);
-					//result.push_back(copy_node(g));
+					success = true;
+					path = get_path(g);
 					while (it != N.end())
+					{
+						delete *it;
 						it = N.erase(it);
+					}
 					break;
 				}
 				++it;
@@ -129,7 +133,7 @@ vector<Node*> DFBnB_algo(Node* start, Node* goal, int & count,bool & error)
 			}
 		}
 	}
-	return result;
+	return path;
 }
 
 				

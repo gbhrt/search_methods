@@ -169,6 +169,7 @@ void save_data(string output_file, vector<string> answers)
 	out_file.open(output_file.c_str());
 	for (int i = 0; i < answers.size(); i++)
 	{
+		cout<< answers[i] << endl;
 		out_file << answers[i] << endl;
 	}
 	cout << "Answers saved to " << output_file << endl;

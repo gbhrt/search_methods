@@ -1,0 +1,4 @@
+no path
+Num: 5
+Cost: 0
+0

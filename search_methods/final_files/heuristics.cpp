@@ -1,6 +1,6 @@
 #include "Header.h"
 
-vector<int> get_indexes(Node * goal,int num)
+vector<int> get_indexes(Node * goal,int num)//general method, if the goal is constant(as in this exersise) a more efficient algorithm exist
 {
 	for (int i = 0; i < goal->N; i++)//rows
 
@@ -26,5 +26,7 @@ int comp_heuristic(Node * node, Node * goal)
 			manhattan_distance += abs(i - indexes[0]) + abs(j - indexes[1]);
 		}
 	}
-	return int(manhattan_distance*3);
+	int odd = manhattan_distance % 2;
+
+	return   (manhattan_distance - odd) * 3 + odd * 5;
 }

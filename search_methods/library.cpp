@@ -139,33 +139,7 @@ string create_path_string(vector<Node*> path,bool success)
 	str_path = str_path.substr(0, str_path.size() - 1);
 	return str_path;
 }
-//string get_path(Node* node)//,int & cost)
-//{
-//	string path;
-//	vector<string>path_vec;
-//	//cost = 0;
-//	while (1)
-//	{
-//
-//		print_node(node,"path");
-//		
-//		
-//		if (node->root)
-//			break;
-//		path_vec.push_back(node->operation.create_string());
-//		//cost += get_cost(node->operation);
-//
-//		node = node->parent;
-//	}
-//	reverse(path_vec.begin(), path_vec.end());
-//	for (int i = 0; i < path_vec.size(); i++)
-//	{
-//		path.append(path_vec[i]);
-//		path.append("-");
-//	}
-//	path = path.substr(0, path.size() - 1);
-//	return path;
-//}
+
 Node* copy_node(Node* node)
 {
 	Node* c_node = new Node();//copy node 
@@ -204,7 +178,6 @@ bool check_goal(Node* node, Node* goal)
 
 Node* get_node(Node* parent_node, Operation  operation)
 {
-	//Node* node = copy_node(parent_node);//copy node 
 	Node* node = new Node();
 	node->M = parent_node->M;
 	node->N = parent_node->N;
@@ -278,23 +251,25 @@ bool check_operation(Node* node, Operation operation)//check if the operation le
 	if (node->root)
 		return true;
 	if(operation.blockes_ind.size() != node->operation.blockes_ind.size()|| 
-		operation.direction % 2 != node->operation.direction % 2 || operation.direction == node->operation.direction)
+		operation.direction % 2 != node->operation.direction % 2 || operation.direction == node->operation.direction)//not the same number of blockes or not the opposide direction
 		return true;
+	
+	vector<int>blockes_ind;//the index of the  position of the moved block from the parent node
+	if (node->operation.direction == 0)
+		blockes_ind = init_vec98(node->operation.blockes_ind[0][0] - 1, node->operation.blockes_ind[0][1]);
+	else if (node->operation.direction == 1)
+		blockes_ind = init_vec98(node->operation.blockes_ind[0][0], node->operation.blockes_ind[0][1] - 1);
+	else if (node->operation.direction == 2)
+		blockes_ind = init_vec98(node->operation.blockes_ind[0][0] + 1, node->operation.blockes_ind[0][1]);
+	else// (node->operation.direction == 3)
+		blockes_ind = init_vec98(node->operation.blockes_ind[0][0], node->operation.blockes_ind[0][1] + 1);
 
-	for (int i = 0; i < operation.blockes_ind.size(); i++)
-	{
-		vector<int>blockes_ind;//the index of the  position of the moved block from the parent node
-		if (node->operation.direction == 0)
-			blockes_ind = init_vec98(node->operation.blockes_ind[i][0] - 1 ,node->operation.blockes_ind[i][1]);
-		else if (node->operation.direction == 1)
-			blockes_ind = init_vec98(node->operation.blockes_ind[i][0],node->operation.blockes_ind[i][1] - 1 );
-		else if (node->operation.direction == 2)
-			blockes_ind = init_vec98(node->operation.blockes_ind[i][0] + 1,node->operation.blockes_ind[i][1] );
-		else// (node->operation.direction == 3)
-			blockes_ind = init_vec98(node->operation.blockes_ind[i][0],node->operation.blockes_ind[i][1] + 1 );
-		if ((operation.blockes_ind[i][0] != blockes_ind[0] && operation.blockes_ind[i][1] != blockes_ind[0]) || (operation.blockes_ind[i][1] != blockes_ind[1] && operation.blockes_ind[i][0] != blockes_ind[1]))
-			return true;
-	}
+	if (operation.blockes_ind[0][0] != blockes_ind[0] || operation.blockes_ind[0][1] != blockes_ind[1])
+		return true;
+	if (operation.blockes_ind.size() == 2)
+		if(operation.blockes_ind[1][0] != blockes_ind[0] || operation.blockes_ind[1][1] != blockes_ind[1])
+				return true;
+
 	return false;
 }
 
@@ -408,9 +383,6 @@ vector<Operation> get_allowed_operators(Node* node)//return the allowed operator
 		}
 		if (node->holes[hole][1] < node->N - 1)
 		{
-			
-			//timer.save_time();
-
 			vector<int> block = init_vec98(node->holes[hole][0],node->holes[hole][1] + 1 );
 			if (block[0] != node->holes[second_hole][0] || block[1] != node->holes[second_hole][1])
 			{
@@ -424,7 +396,6 @@ vector<Operation> get_allowed_operators(Node* node)//return the allowed operator
 		}
 		if (node->holes[hole][0] > 0)
 		{
-			
 			vector<int> block = init_vec98(node->holes[hole][0] - 1,node->holes[hole][1] );
 			if (block[0] != node->holes[second_hole][0] || block[1] != node->holes[second_hole][1])
 			{
@@ -438,7 +409,6 @@ vector<Operation> get_allowed_operators(Node* node)//return the allowed operator
 		}
 		if ((node->holes[hole][1] > 0))
 		{
-			
 			vector<int> block = init_vec98(node->holes[hole][0] , node->holes[hole][1] - 1 );
 			if (block[0] != node->holes[second_hole][0]  || block[1] != node->holes[second_hole][1])
 			{
@@ -454,8 +424,6 @@ vector<Operation> get_allowed_operators(Node* node)//return the allowed operator
 		hole = second_hole;
 		second_hole = first_hole;
 	}
-
-
 	return operations;
 
 }
@@ -464,11 +432,6 @@ void replace_node_in_priority_quene(priority_queue <Node*, vector<Node*>, Compar
 {
 	vector<Node*> tmp;
 	int size = pq.size();
-	//for (int i = 0; i < size; i++)
-	//{
-	//	tmp.push_back(pq.top());
-	//	pq.pop();
-	//}
 	do
 	{
 		tmp.push_back(pq.top());
@@ -477,12 +440,10 @@ void replace_node_in_priority_quene(priority_queue <Node*, vector<Node*>, Compar
 
 	exist_node->f = node->f;
 	exist_node->g = node->g;
-	exist_node->h = node->h;
 	exist_node->parent = node->parent;
 	for (int i = 0; i < tmp.size(); i++)
-	{
 		pq.push(tmp[i]);
-	}
+	
 }
 
 void remove_from_stack(stack<Node*> s,Node * node)

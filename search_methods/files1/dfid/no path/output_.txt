@@ -1,0 +1,4 @@
+no path
+Num: 30
+Cost: 0
+0.002

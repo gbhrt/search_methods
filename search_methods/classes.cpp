@@ -1,19 +1,5 @@
 #include "Header.h"
 
-//
-//winTimer::winTimer()
-//{
-//	QueryPerformanceFrequency(&freq);
-//}
-//void winTimer::save_time()
-//{
-//	QueryPerformanceCounter(&start_time);
-//}
-//int winTimer::get_time()
-//{
-//	QueryPerformanceCounter(&read);
-//	return int((read.QuadPart - start_time.QuadPart)*1000000.) / freq.QuadPart;
-//}
 void hash_table::push(Node* node)
 {
 	string key = convert_to_key(node);
@@ -41,13 +27,9 @@ void hash_table::add_to_hash(string key, Node* node)
 
 bool hash_table::is_inside(Node* node)
 {
-	//winTimer timer;
-
 	string key = convert_to_key(node);
-	//timer.save_time();
 	if (hashmap.find(key) == hashmap.end())
 		return false;
-	//cout << "find time: " << timer.get_time() << endl;
 	return true;
 }
 Node* hash_table::get_node(Node* node)
@@ -72,8 +54,6 @@ int hash_table::size()
 Node::Node()
 {
 	root = false;
-	//for (int i = 0; i < 1000000; i++)
-	//	tmp.push_back(0);
 }
 string Operation::create_string()
 {
@@ -88,10 +68,6 @@ string Operation::create_string()
 	return str;
 }
 
-//bool Node::operator<(const Node * node)
-//{
-//	return this->f < node->f;
-//}
 
 bool Comparator:: operator()(const Node* node1, const Node* node2)
 {
