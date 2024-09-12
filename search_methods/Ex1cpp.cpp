@@ -3,7 +3,7 @@
 #include <ctime>
 using namespace std;
 
-int main()
+int main(int argc, char *argv[])
 { 
 	string input_file_name = "input.txt";
 	string output_file_name = "output.txt";
